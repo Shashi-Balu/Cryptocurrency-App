@@ -1,0 +1,149 @@
+{% extends 'base.html' %} {% block title %} Search Results {% endblock title %}
+{% block content %}
+
+<div class="text-white border-0 col-md-8 mx-auto mt-5">
+  <!-- NOTIFY USER IF THEY HAVE ALREADY ADDED THIS CURRENCY IN THEIR WALLET. ANY NEW ADDITIONS WILL BE INCREMENTED, NOT OVERWRITTEN. -->
+  {% if is_already_in_portfolio %}
+  <div class="card-body">
+    <p class="card-text text-uppercase mb-0">
+      <small>{{ coin_id }} is already in your portfolio.</small>
+    </p>
+    <p class="card-text">
+      <small
+        >Any changes to the quantity will be reflected in your portfolio. Units
+        will be added to the existing quantity.</small
+      >
+    </p>
+    <hr class="border-white" />
+  </div>
+  {% endif %}
+
+  <div class="card mb-3 text-center border-0">
+    <div class="row justify-content-center align-items-center p-5">
+      <div class="col-md-4">
+        <img
+          src="{{ image }}"
+          height="350"
+          width="350"
+          class="img-fluid"
+          alt="{{ symbol }}"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <div class="card-body text-dark">
+          <h4 class="card-title text-uppercase mb-2">
+            <b>{{ coin_id }}</b>
+            <p class="card-subtitle mb-2 text-muted"><b>[{{ symbol }}]</b></p>
+          </h4>
+
+          <p class="card-text text-uppercase mb-2">
+            <small><b>MARKET CAP:</b> {{ market_cap }}</small>
+          </p>
+          <form
+            action="{% url 'add_to_portfolio' %}"
+            method="post"
+            class="d-inline-block"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ coin_id }}" />
+            <label class="mr-2 font-weight-bold text-uppercase"
+              >Units Owned</label
+            >
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              max="500"
+              value="1"
+              class="form-control d-inline-block w-auto mr-2 mb-4"
+            /><br />
+            <button type="submit" class="btn btn-primary btn-lg text-uppercase">
+              Add to Portfolio
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TradingView Widget BEGIN -->
+{% comment %} <div class="tradingview-widget-container" style="height: 600px;">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "BINANCE:BTCUSDT|1D"
+    ],
+    [
+      "BINANCE:ETHUSDT|1D"
+    ],
+    [
+      "BINANCE:SOLUSDT|1D"
+    ],
+    [
+      "BINANCE:DOGEUSDT|1D"
+    ]
+  ],
+  "chartOnly": false,
+  "width": "100%",
+  "locale": "en",
+  "colorTheme": "dark",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": false,
+  "hideSymbolLogo": false,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "price-and-percent",
+  "chartType": "area",
+  "maLineColor": "#2962FF",
+  "maLineWidth": 1,
+  "maLength": 9,
+  "lineWidth": 2,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|1",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div> {% endcomment %}
+<!-- TradingView Widget END -->
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+  "width": "1080",
+  "height": "610",
+  "symbol": "BINANCE:BTCUSDT",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "allow_symbol_change": true,
+  "calendar": false,
+  "support_host": "https://www.tradingview.com"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+{% endblock content %} {% block scripts %} {% endblock scripts %}
